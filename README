@@ -1,6 +1,6 @@
-CSVql - A query language for CSV files
+= CSVql - A query language for CSV files =
 
-Synopsis:
+== Synopsis ==
 
 > cat people.csv
 # These are just some sample data. Lines with comments start
@@ -30,14 +30,20 @@ sales,2500
 marketing,2300
 it,3500
 
-Why CVSql?
+== Why CVSql? ==
 
 Do you use CVS files as a part of your workflow? If your workflow is automated, you probably know that any changed to the source of the data is a nightmare. Adding or removing columns leads to updating all scripts.
 
-Why not use a SQL database?
+=== Why not use a SQL database? ===
 
 CSVql is designed for situations, where you only need one-time processing, such as when the data being processed are not the final data and need not to be stored. The queries are performed only once, for example to generate reports. In this case, the benefits of using a databse do not apply, as most of the processing is only done once. However, using a database makes the workflow dependent on the database server being installed and configured properly wherever the workflow is used.
 
-Why not use cut, sed, grep, and other standard Unix tools?
+=== Why not use cut, sed, grep, and other standard Unix tools? ===
 
 While CSVql replicates some functionality of standard Unix tools such as grep, cut or paste, CSVql-bases scripts are easier to use and maintain thanks to its column-based design. All the standard Unix tools use numbers to address the columns. This is fine, until you change the columns in the original source of data.
+
+== Requirements ==
+
+* Perl 5.8
+* Text::CSV
+* Natural Docs for building documentation
