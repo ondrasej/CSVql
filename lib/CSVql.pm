@@ -1,4 +1,3 @@
-# About: License
 # This file is part of CSVql.
 #
 # CSVql is free software: you can redistribute it and/or modify
@@ -163,6 +162,20 @@ sub fetch_row {
 	$$row{$name} = $$fields[$i];
     }
     return $row;
+}
+
+# Method: is_column
+# Checks that a column of the given name is present in the CSV file.
+#
+# Parameters:
+#   $column - the name of the column
+#
+# Returns:
+# A true value if $column is a name of a column in the CSV file.
+sub is_column {
+    my ($self, $column) = @_;
+
+    return exists $$self{columns_by_name}{$column};
 }
 
 # Method: _parse_line

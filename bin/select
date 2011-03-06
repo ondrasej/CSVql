@@ -1,5 +1,4 @@
 #!/usr/bin/env perl
-# About: License
 # This file is part of CSVql.
 #
 # CSVql is free software: you can redistribute it and/or modify
@@ -15,18 +14,44 @@
 # You should have received a copy of the GNU General Public License
 # along with CSVql.  If not, see <http://www.gnu.org/licenses/>.
 
+use utf8;
 use strict;
 use warnings;
 
 use FindBin;
+use Getopt::Long;
+use Pod::Usage;
 use lib "$FindBin::Bin/../lib";
 
 use CSVql;
 
-my @columns = @ARGV;
-my $csv = CSVql->new();
+my $opt_show_help;
+my $opt_delimiter;
+my $opt_quote_char;
 
-#TODO: verify column names
+GetOptions(
+	"help|?" => \$opt_show_help,
+	"delimiter=s" => \$opt_delimiter,
+	"quote=s" => \$opt_quote_char
+    ) or pod2usage(2); 
+
+# Show help if the user asks for it OR when no columns are selected
+pod2usage(-verbose => 99) if $opt_show_help;
+pod2usage(1) if not @ARGV;
+
+# Start processing the CSV file
+my @columns = @ARGV;
+
+my %csv_params;
+$csv_params{delimiter} = $opt_delimiter if $opt_delimiter;
+$csv_params{quote_char} = $opt_quote_char if $opt_quote_char;
+my $csv = CSVql->new(%csv_params);
+
+# Verify column names
+foreach my $column (@columns) {
+    print STDERR "'$column' is not a column the CSV file\n" unless $csv->is_column($column);
+}
+
 print $csv->format(@columns)."\n";
 while(my $row = $csv->fetch_row()) {
     my @out;
@@ -35,3 +60,41 @@ while(my $row = $csv->fetch_row()) {
     print $csv->format(@out);
     print "\n";
 }
+
+__END__
+
+=head1 NAME
+
+select - Select columns in CSV files
+
+=head1 SYNOPSIS
+
+select [-h] [-d delimiter] [-q quotation] columns
+
+=head1 DESCRIPTION
+
+Selects the specified columns from a CSV file. The columns to be shown are specified by their names.
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<--help>
+
+Shows this help message
+
+=item B<-d> or B<--delimiter>
+
+Sets the delimiter character in the CSV file
+
+=item B<-q> or B<--quote>
+
+Sets the quote character in the CSV file
+
+=back
+
+=head1 AUTHOR
+
+Ondřej Sýkora <mail@ondrejsykora.com>
+
+=cut
