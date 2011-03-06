@@ -1,0 +1,10 @@
+# These are just some sample data. Lines with comments start
+# with a hash or with semicolon
+; The first non-empty line that is not a comment contains names
+; of the columns in the file. The other non-empty lines contain
+; the data.
+id,name,age,sallary,department
+1,John Doe,52,2500,sales
+2,Jane Doe,49,2300,marketing
+3,Foo Bar,35,3000,it
+4,Enoch Root,70,4000,it
